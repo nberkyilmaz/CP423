@@ -1,14 +1,18 @@
-import os
-path = r"C:\Users\nberk\Desktop\WLU\Year 5\Winter 2024\CP423\Assinment 1\data"
-os.chdir(path)
+import nltk
+from collections import Counter
+import re
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
-def read_text_file(file_path):
-    with open(file_path, 'r') as f:
-        print(f.read())
+nltk.download('punkt')
+nltk.download('stopwords')
 
-for file in os.listdir():
-    if file.endswith(".txt"):
-        file_path = f"{path}\{file}"
-
-        read_text_file(file_path)
-    print("\n")
+def preprocess_text(text):
+    text = text.lower()
+    tokens = word_tokenize(text)
+    stop_words = set(stopwords.words('english'))
+    tokens = [token for token in tokens if token not in stop_words]
+    tokens = [re.sub('[^a-zA-Z]', ' ', token) for token in tokens]
+    tokens = [token.strip() for token in tokens]
+    tokens = [token for token in tokens if len(token) > 1]
+    return tokens
